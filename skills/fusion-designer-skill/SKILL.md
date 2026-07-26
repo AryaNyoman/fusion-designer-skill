@@ -89,6 +89,18 @@ Nothing ships with a failing gate. "Mostly passes" is a FAIL.
 2. Final impeccable polish pass on anything the screenshots exposed.
 3. Deliver with a short report: Design Read, Design Contract summary, gate results.
 
+## Motion Engine (Phase 3 reference)
+
+The pipeline's official animation engine is **Motion** ([motiondivision/motion](https://github.com/motiondivision/motion), formerly Framer Motion). This is not a new rule — taste-skill mandates it as the default library and emil-design-eng's spring/gesture guidance assumes it. Binding facts:
+
+- **Import from `motion/react`** (`import { motion } from "motion/react"`); `framer-motion` is a legacy alias — do not use it in new code.
+- **Division of labor:** Motion for component-level UI motion (enter/exit, gestures, layout, springs); GSAP ScrollTrigger only for page-level scrolltelling per taste-skill's canonical skeletons. **Never both in the same component tree.**
+- **Continuous input values** (mouse position, scroll progress, drag) → `useMotionValue` / `useTransform` / `useScroll`. Never `useState` — it re-renders the tree every frame.
+- **Springs:** prefer Apple-style config `{ type: "spring", duration, bounce }`, bounce 0.1–0.3 when used at all; springs earn their keep on gestures and interruptible motion (they keep velocity; CSS keyframes restart from zero).
+- **Performance caveat (from emil-design-eng):** Motion's shorthand props (`x`, `y`, `scale`) run on the main thread via `requestAnimationFrame`. For animations that must survive a busy main thread, use the full `transform` string or plain CSS animations. Animate transform/opacity only, always.
+- **Reduced motion:** gate everything above `MOTION_INTENSITY 3` with `useReducedMotion()`.
+- **Official agent-readable docs:** https://motion.dev/llms.txt (index of the full Motion docs). Consult it for API specifics instead of guessing from training data.
+
 ## Precedence (deterministic — never renegotiate per conflict)
 
 1. **The user's explicit brief** overrides everything below.

@@ -58,6 +58,10 @@ Phase 5 VERIFY      screenshots desktop+mobile, light+dark → fix → polish �
 
 **Core rule: phases run in order, every gate must pass before shipping. No phase skipping, no gate skipping, no substituting skills that are not part of the pipeline.**
 
+### Animation engine
+
+The pipeline's official animation engine is **[Motion](https://github.com/motiondivision/motion)** (formerly Framer Motion) — the library both taste-skill and emil-design-eng already assume. The skill pins the binding facts: import from `motion/react` (never the legacy `framer-motion` alias), Motion for component-level motion vs GSAP ScrollTrigger for page-level scrolltelling (never both in one component tree), `useMotionValue`/`useTransform` for continuous input (never `useState`), Apple-style spring config, the main-thread caveat for shorthand props, and `useReducedMotion()` gating. For API specifics it defers to Motion's official agent-readable docs at [motion.dev/llms.txt](https://motion.dev/llms.txt).
+
 ### Deterministic precedence (conflicts are never renegotiated)
 
 1. The user's explicit brief.
@@ -84,5 +88,6 @@ This skill orchestrates work by others — all credit for the underlying design 
 - **leonxlnx** — [taste-skill](https://github.com/leonxlnx/taste-skill) (anti-slop generation law)
 - **Emil Kowalski** — [skills](https://github.com/emilkowalski/skills) (design-engineering & animation craft)
 - **ui-ux-pro-max** and **impeccable** skill authors
+- **Motion** — [motiondivision/motion](https://github.com/motiondivision/motion) (the animation library the pipeline standardizes on)
 
 Fusion Designer contains no copied content from those repositories; it references their skills by name and defines the orchestration layer on top.
